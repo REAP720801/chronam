@@ -49,8 +49,7 @@ def bag_in_place(directory):
     client.add_credentials(name=settings.CTS_EDEPOSIT_APPLICATION_USER,
                            password=settings.CTS_EDEPOSIT_APPLICATION_PASSWORD)
     request_params = {'bagInstanceKey': datetime.isoformat(),
-                    # TODO: Figure out what path variable is & set it.
-                        }
+                      'filpath': directory,}
     request_params = urllib.urlencode(request_params)
     request_url = '%sservice_requests/bag_in_place' 
     return
