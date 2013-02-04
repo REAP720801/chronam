@@ -17,3 +17,4 @@ requests
 django-celery
 django-kombu
 worldcat
+fabric
