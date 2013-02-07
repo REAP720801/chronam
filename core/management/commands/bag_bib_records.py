@@ -19,11 +19,6 @@ configure_logging('bag_bib_records.config', 'bag_bib_records.log')
 _logger = logging.getLogger(__name__)
 
 env.host_string = 'localhost'
-def get_client(client_parameters=None):
-    if client_parameters is not None:
-        parms.update(client_parameters)
-
-    return TransferClient(endpoint=settings.CTS_BASE_URL, **parms)
 
 
 def get_client(client_parameters=None):
