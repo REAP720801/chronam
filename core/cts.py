@@ -62,13 +62,17 @@ class CTS(object):
             data = urllib.urlencode(data)
             headers["content-type"] = "application/x-www-form-urlencoded"
 
+        print url
         r = requests.request(method, url, 
                              params=params, 
                              data=data,
                              headers=headers, 
                              auth=self.auth)
-
-        if r.status_code == 200:
+        print r.content
+        print r.error
+        print r.reason
+        print r.status_code
+        if r.status_code == 200 or 201:
             return json.loads(r.content)
         elif r.status_code == 301 or r.status_code == 302:
             return self._request(r.headers['location'], method, params, data)
@@ -77,7 +81,8 @@ class CTS(object):
         else:
             logger.error("%s %s with %s resulted in %s", method, url, params, 
                     r.status_code)
-            return None
+            return json.loads(r.content) 
+            #return None
 
 
 class Resource(object):
