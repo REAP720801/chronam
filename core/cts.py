@@ -72,6 +72,11 @@ class CTS(object):
         print r.error
         print r.reason
         print r.status_code
+        print '--------------'
+        print r.request.full_url
+        print r.request.method
+        print r.request.params
+        print r.request.headers
         if r.status_code == 200 or 201:
             return json.loads(r.content)
         elif r.status_code == 301 or r.status_code == 302:
