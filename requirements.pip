@@ -16,5 +16,5 @@ html5lib
 requests
 django-celery
 django-kombu
-worldcat
-fabric
+worldcat==0.3.6
+fabric==1.5.3
