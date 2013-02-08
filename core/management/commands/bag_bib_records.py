@@ -21,7 +21,6 @@ _logger = logging.getLogger(__name__)
 env.host_string = 'localhost'
 
 
-
 def get_client(client_parameters=None):
     if client_parameters is not None:
         parms.update(client_parameters)
@@ -34,26 +33,29 @@ def copy_dir(source=settings.BIB_STORAGE):
     abs_location = run('file -b %s' % source)
     abs_location = abs_location.strip("'").split("`")[1]
     destination = '-'.join((abs_location, bag_date))
-
+     
     if not exists(destination):
         sudo('mkdir %s' % destination)
         sudo('mkdir %s' % destination + '/data')
         sudo('cp -r %s/* %s' % (source, destination + '/data'))
-        # TODO: Add check to make sure file sizes are the same
-        # & everything transferred correctly.
-        # du --max-depth=0 %s % data
 
-    return bag_id, destination
+    bag_id = '-'.join(settings.BIB_DIR, bag_date)
+    if bag_id == destination.split('/')[-1]:
+        return bag_id, destination
+    else:
+        warning = 'Bag id: %s and content path %s do not match' % (bag_id,
+            destination)
+        _logger.warning(warning)
 
 #TODO: MOVE ALL CTS FUNCTIONS into cts.py when complete.
 def bag_in_place(cts, directory, bag_id):
     print bag_id
     print directory
-    url = 'service_requests/bag_in_place/can_perform' 
+    #url = 'service_requests/bag_in_place/can_perform' 
+    url = 'console/operation/baginplace'
     params = {'bagInstanceKey': bag_id, 
-              'filepath': directory,
-                }
-    method = 'get'
+              'filepath': directory,}
+    method = 'post'
     response = cts._request(url, method, params)
     print response
     return response
@@ -109,8 +111,6 @@ class Command(BaseCommand):
             bag_key = response['key']
             response = bag_in_place(cts, destination, bag_key)  
             print response
-            # hit cts to bag & receive content
-            # create a new process instance using the "workflow web API"
             # post to /workflow/process_instances and the process instance ID to use is receive1
 
         # when complete delete bib-$date dir, but leave bib dir
