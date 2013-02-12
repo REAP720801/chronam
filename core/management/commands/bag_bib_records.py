@@ -60,7 +60,7 @@ class Command(BaseCommand):
 
         # Make copy of bib directory
         #chronam_bag_id, bag_source = self.copy_dir()
-        chronam_bag_id, bag_source = ('bib-dev-20130211', '/vol/ndnp/chronam/bib-dev-20130211') 
+        chronam_bag_id, bag_source = ('bib-dev-20130208', '/vol/ndnp/chronam/bib-dev-20130208') 
         
         # Make bag in placed
         if bag_source:
@@ -70,11 +70,12 @@ class Command(BaseCommand):
             cts = CTS(settings.CTS_USERNAME, settings.CTS_PASSWORD,
                       settings.CTS_URL)
 
-                        process_variables = settings.CTS_BIB_DEFAULT_VARIABLES 
+            process_variables = settings.CTS_BIB_DEFAULT_VARIABLES 
             process_variables.update({ 
                 "bagId" : chronam_bag_id,
                 "stagingFilepath" : bag_source,
                 "bagNote" : bag_note,
+                "performDeleteStagingCopy" : "false",
             })
             data_payload = {"processDefinitionId" : "receive1"}
             self.load_variables(process_variables, data_payload)
